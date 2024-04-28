@@ -14,11 +14,12 @@ export async function createTodo(createTodoRequest, userId) {
   return await todoAccess.createTodo({
     todoId: itemId,
     userId: userId,
-    attachmentUrl: createTodoRequest.attachmentUrl,
-    dueDate: createTodoRequest.dueDate,
-    createdAt: createTodoRequest.createdAt,
-    name: createTodoRequest.name,
-    done: createTodoRequest.done
+    // attachmentUrl: createTodoRequest.attachmentUrl,
+    // dueDate: createTodoRequest.dueDate,
+    createdAt: createTodoRequest.dueDate,
+    // createdAt: createTodoRequest.createdAt,
+    name: createTodoRequest.name
+    // done: createTodoRequest.done
   })
 }
 
