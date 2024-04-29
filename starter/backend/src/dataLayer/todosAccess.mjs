@@ -36,12 +36,14 @@ export class TodoAccess {
     return todo
   }
 
-  async deleteTodo(todoId) {
-    console.log(`Deleting a todo with todoId ${todoId}`)
+  async deleteTodo(todoId, userId) {
+    console.log(
+      `Deleting a todo with todoId ${todoId} from user with id ${userId}`
+    )
 
     await this.dynamoDbClient.delete({
       TableName: this.todosTable,
-      Key: { todoId }
+      Key: { todoId, userId }
     })
   }
 

@@ -14,12 +14,11 @@ export async function createTodo(createTodoRequest, userId) {
   return await todoAccess.createTodo({
     todoId: itemId,
     userId: userId,
-    // attachmentUrl: createTodoRequest.attachmentUrl,
-    // dueDate: createTodoRequest.dueDate,
-    createdAt: createTodoRequest.dueDate,
-    // createdAt: createTodoRequest.createdAt,
-    name: createTodoRequest.name
-    // done: createTodoRequest.done
+    attachmentUrl: createTodoRequest.attachmentUrl,
+    dueDate: createTodoRequest.dueDate,
+    createdAt: new Date().toISOString,
+    name: createTodoRequest.name,
+    done: false
   })
 }
 
@@ -31,6 +30,6 @@ export async function updateTodo(todoId, updateTodoRequest) {
   })
 }
 
-export async function deleteTodo(todoId) {
-  await todoAccess.deleteTodo(todoId)
+export async function deleteTodo(todoId, userId) {
+  await todoAccess.deleteTodo(todoId, userId)
 }
