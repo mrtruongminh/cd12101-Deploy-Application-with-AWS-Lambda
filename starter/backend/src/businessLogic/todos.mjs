@@ -22,12 +22,16 @@ export async function createTodo(createTodoRequest, userId) {
   })
 }
 
-export async function updateTodo(todoId, updateTodoRequest) {
-  return await todoAccess.updateTodo(todoId, {
-    name: updateTodoRequest.name,
-    dueDate: updateTodoRequest.dueDate,
-    done: updateTodoRequest.done
-  })
+export async function updateTodo(todoId, updateTodoRequest, userId) {
+  return await todoAccess.updateTodo(
+    todoId,
+    {
+      name: updateTodoRequest.name,
+      dueDate: updateTodoRequest.dueDate,
+      done: updateTodoRequest.done
+    },
+    userId
+  )
 }
 
 export async function deleteTodo(todoId, userId) {

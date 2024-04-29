@@ -37,9 +37,7 @@ export class TodoAccess {
   }
 
   async deleteTodo(todoId, userId) {
-    console.log(
-      `Deleting a todo with todoId ${todoId} from user with id ${userId}`
-    )
+    console.log(`Deleting a todo with todoId ${todoId}`)
 
     await this.dynamoDbClient.delete({
       TableName: this.todosTable,
@@ -47,13 +45,22 @@ export class TodoAccess {
     })
   }
 
-  async updateTodo(todoId, todo) {
+  async updateTodo(todoId, todo, userId) {
     console.log(`Update a todo with todoId ${todoId}`)
 
     await this.dynamoDbClient.update({
       TableName: this.todosTable,
-      Key: { todoId },
-      Item: todo
+      Key: { todoId, userId },
+      // Item: todo,
+      // UpdateExpression: 'set #n = :n, dueDate = :due, done = :dn',
+      UpdateExpression: 'set name = :n, dueDate = :due, done = :dn',
+      ConditionExpression: 'attribute_exists(todoId)',
+      // ExpressionAttributeNames: { '#n': 'name' },
+      ExpressionAttributeValues: {
+        ':n': todo.name,
+        ':due': todo.dueDate,
+        ':dn': todo.done
+      }
     })
   }
 }
