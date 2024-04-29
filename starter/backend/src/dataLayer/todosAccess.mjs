@@ -9,7 +9,11 @@ export class TodoAccess {
   ) {
     this.documentClient = documentClient
     this.todosTable = todosTable
-    this.dynamoDbClient = DynamoDBDocument.from(this.documentClient)
+    this.dynamoDbClient = DynamoDBDocument.from(this.documentClient, {
+      marshallOptions: {
+        removeUndefinedValues: true
+      }
+    })
   }
 
   async getAllTodos() {
@@ -32,12 +36,12 @@ export class TodoAccess {
     return todo
   }
 
-  async deleteTodo(todo) {
-    console.log(`Deleting a todo with todoId ${todo.todoId}`)
+  async deleteTodo(todoId) {
+    console.log(`Deleting a todo with todoId ${todoId}`)
 
     await this.dynamoDbClient.delete({
       TableName: this.todosTable,
-      Key: { todoId: todo.todoId }
+      Key: { todoId }
     })
   }
 
