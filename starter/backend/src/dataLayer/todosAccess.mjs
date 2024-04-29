@@ -16,11 +16,18 @@ export class TodoAccess {
     })
   }
 
-  async getAllTodos() {
+  async getAllTodos(userId) {
     console.log('Getting all todos')
 
-    const result = await this.dynamoDbClient.scan({
-      TableName: this.todosTable
+    // const result = await this.dynamoDbClient.scan({
+    //   TableName: this.todosTable
+    // })
+    const result = await this.dynamoDbClient.query({
+      TableName: this.todosTable,
+      KeyConditionExpression: 'userId = :userId',
+      ExpressionAttributeValues: {
+        ':userId': userId
+      }
     })
     return result.Items
   }
@@ -52,10 +59,8 @@ export class TodoAccess {
       TableName: this.todosTable,
       Key: { todoId, userId },
       // Item: todo,
-      // UpdateExpression: 'set #n = :n, dueDate = :due, done = :dn',
       UpdateExpression: 'set name = :n, dueDate = :due, done = :dn',
       ConditionExpression: 'attribute_exists(todoId)',
-      // ExpressionAttributeNames: { '#n': 'name' },
       ExpressionAttributeValues: {
         ':n': todo.name,
         ':due': todo.dueDate,
