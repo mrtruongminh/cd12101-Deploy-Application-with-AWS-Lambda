@@ -68,4 +68,17 @@ export class TodoAccess {
       }
     })
   }
+
+  async saveImageUrl(todoId, userId) {
+    const bucketName = process.env.ATTACHMENT_S3_BUCKET
+    await this.dynamoDbClient.update({
+      TableName: this.todosTable,
+      Key: { userId, todoId },
+      ConditionExpression: 'attribute_exists(todoId)',
+      UpdateExpression: 'set attachmentUrl = :attachmentUrl',
+      ExpressionAttributeValues: {
+        ':attachmentUrl': `https://${bucketName}.s3.amazonaws.com/${todoId}`
+      }
+    })
+  }
 }

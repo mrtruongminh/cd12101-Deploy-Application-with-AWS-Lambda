@@ -1,6 +1,7 @@
 import * as uuid from 'uuid'
 
 import { TodoAccess } from '../dataLayer/todosAccess.mjs'
+import { getUploadUrl } from '../fileStorage/attachmentUtils.mjs'
 
 const todoAccess = new TodoAccess()
 
@@ -36,4 +37,13 @@ export async function updateTodo(todoId, updateTodoRequest, userId) {
 
 export async function deleteTodo(todoId, userId) {
   await todoAccess.deleteTodo(todoId, userId)
+}
+
+export async function generateUploadUrl(todoId, userId) {
+  // get signed url
+  const url = await getUploadUrl(todoId)
+  // save image into bucket
+  await todoAccess.saveImageUrl(todoId, userId)
+
+  return url
 }
